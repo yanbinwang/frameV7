@@ -15,8 +15,6 @@ import androidx.core.content.ContextCompat;
 
 import com.dataqin.base.widget.SimpleViewGroup;
 import com.dataqin.common.R;
-import com.dataqin.common.widget.xrecyclerview.refresh.XRefreshLayout;
-import com.dataqin.common.widget.xrecyclerview.refresh.callback.OnXRefreshListener;
 
 /**
  * Created by android on 2017/8/7.
@@ -33,7 +31,7 @@ import com.dataqin.common.widget.xrecyclerview.refresh.callback.OnXRefreshListen
 @SuppressLint("InflateParams")
 public class EmptyLayout extends SimpleViewGroup {
     private View contextView;
-    private XRefreshLayout xEmptyRefresh;//外层刷新
+    private LinearLayout llContainer;//外层刷新
     private ImageView ivEmpty;//内容
     private TextView tvEmpty;//文本
     private OnEmptyRefreshListener onEmptyRefreshListener;
@@ -58,24 +56,17 @@ public class EmptyLayout extends SimpleViewGroup {
     private void initialize() {
         Context context = getContext();
         contextView = LayoutInflater.from(context).inflate(R.layout.view_empty, null);
-        xEmptyRefresh = contextView.findViewById(R.id.x_empty_refresh);
+        llContainer = contextView.findViewById(R.id.ll_container);
         ivEmpty = contextView.findViewById(R.id.iv_empty);
         tvEmpty = contextView.findViewById(R.id.tv_empty);
-        xEmptyRefresh.setOnXRefreshListener(new OnXRefreshListener() {
-
-            @Override
-            public void onRefresh() {
-                super.onRefresh();
-                //进入加载中，并停止刷新动画
-                showLoading();
-                xEmptyRefresh.finishRefreshing();
-                if (null != onEmptyRefreshListener) {
-                    onEmptyRefreshListener.onRefreshListener();
-                }
+        contextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));//设置LayoutParams
+        contextView.setOnClickListener(view -> {
+            //进入加载中，并停止刷新动画
+            showLoading();
+            if (null != onEmptyRefreshListener) {
+                onEmptyRefreshListener.onRefreshListener();
             }
         });
-        contextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));//设置LayoutParams
-        contextView.setOnClickListener(null);
         setBackgroundColor(ContextCompat.getColor(context, R.color.gray_f6f8ff));
         showLoading();
     }
@@ -95,7 +86,6 @@ public class EmptyLayout extends SimpleViewGroup {
 
     //当数据正在加载的时候显示（接口返回快速时会造成闪屏）
     public void showLoading() {
-        xEmptyRefresh.setVisibility(View.GONE);
         ivEmpty.setVisibility(View.GONE);
         tvEmpty.setVisibility(View.GONE);
     }
@@ -107,7 +97,6 @@ public class EmptyLayout extends SimpleViewGroup {
 
     //当数据为空时(显示需要显示的图片，以及内容字)---传入图片-1：原图 0：不需要图片 default：传入的图片
     public void showEmpty(int resId, String emptyText) {
-        xEmptyRefresh.setVisibility(View.VISIBLE);
         ivEmpty.setBackgroundResource(0);
         if (-1 == resId) {
             ivEmpty.setVisibility(View.VISIBLE);
@@ -128,7 +117,6 @@ public class EmptyLayout extends SimpleViewGroup {
 
     //当数据错误时（没有网络）
     public void showError() {
-        xEmptyRefresh.setVisibility(View.VISIBLE);
         ivEmpty.setVisibility(View.VISIBLE);
         ivEmpty.setBackgroundResource(0);
         ivEmpty.setImageResource(R.mipmap.img_net_err);
@@ -138,7 +126,7 @@ public class EmptyLayout extends SimpleViewGroup {
 
     //设置背景颜色
     public void setBackgroundColor(int color) {
-        xEmptyRefresh.setBackgroundColor(color);
+        llContainer.setBackgroundColor(color);
     }
 
     //设置点击
