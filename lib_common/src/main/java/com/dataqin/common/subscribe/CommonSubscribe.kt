@@ -2,12 +2,10 @@ package com.dataqin.common.subscribe
 
 import com.dataqin.common.http.factory.RetrofitFactory
 import com.dataqin.common.http.repository.ApiResponse
-import com.dataqin.common.model.KeyModel
 import com.dataqin.common.model.UploadModel
 import io.reactivex.rxjava3.core.Flowable
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.Call
 
 /**
  * author:wyb
@@ -16,10 +14,6 @@ import retrofit2.Call
 object CommonSubscribe : CommonApi {
     private val commonApi by lazy {
         RetrofitFactory.instance.create(CommonApi::class.java)
-    }
-
-    override fun getPublicKeyApi(agent: String, params: Map<String, String>): Call<ApiResponse<KeyModel>> {
-        return commonApi.getPublicKeyApi(agent, params)
     }
 
     override fun getDownloadApi(downloadUrl: String): Flowable<ResponseBody> {

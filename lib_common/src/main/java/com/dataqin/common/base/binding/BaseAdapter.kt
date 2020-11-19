@@ -15,7 +15,6 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseViewBindingHolder?> {
         set(value) {
             //设置集合类型不相同时替换
             if (value !== field) {
-                field.clear()
                 if (!value.isNullOrEmpty()) {
                     field.addAll(value)
                 }

@@ -45,7 +45,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseImpl, B
     private var presenter: BasePresenter<*>? = null//P层
     private val rxManager by lazy { RxManager() } //事务管理器
     private val loadingDialog by lazy { LoadingDialog(this) }//刷新球控件，相当于加载动画
-    private val TAG = javaClass.simpleName.toLowerCase(Locale.getDefault()) //额外数据，查看log，观察当前activity是否被销毁
+    private val TAG =
+        javaClass.simpleName.toLowerCase(Locale.getDefault()) //额外数据，查看log，观察当前activity是否被销毁
 
     // <editor-fold defaultstate="collapsed" desc="基类方法">
     protected fun addDisposable(disposable: Disposable?) {
@@ -71,14 +72,19 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseImpl, B
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val type = javaClass.genericSuperclass
         if (type is ParameterizedType) {
+            var view: View? = null
             try {
                 val vbClass = type.actualTypeArguments[0] as? Class<VB>
                 val method = vbClass?.getMethod("inflate", LayoutInflater::class.java)
                 binding = method?.invoke(null, layoutInflater) as VB
+                view = binding.root
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
+            } finally {
+                if (null != view) {
+                    setContentView(view)
+                }
             }
-            setContentView(binding.root)
         }
         initView()
         initEvent()
@@ -234,9 +240,15 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseImpl, B
                     cls == String::class.java -> postcard.withString(key, value as String?)
                     cls == Int::class.javaPrimitiveType -> postcard.withInt(key, value as Int)
                     cls == Long::class.javaPrimitiveType -> postcard.withLong(key, value as Long)
-                    cls == Boolean::class.javaPrimitiveType -> postcard.withBoolean(key, value as Boolean)
+                    cls == Boolean::class.javaPrimitiveType -> postcard.withBoolean(
+                        key,
+                        value as Boolean
+                    )
                     cls == Float::class.javaPrimitiveType -> postcard.withFloat(key, value as Float)
-                    cls == Double::class.javaPrimitiveType -> postcard.withDouble(key, value as Double)
+                    cls == Double::class.javaPrimitiveType -> postcard.withDouble(
+                        key,
+                        value as Double
+                    )
                     cls == CharArray::class.java -> postcard.withCharArray(key, value as CharArray?)
                     cls == Bundle::class.java -> postcard.withBundle(key, value as Bundle?)
                     else -> throw RuntimeException("不支持参数类型" + ": " + cls.simpleName)
