@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
 }
 
@@ -46,9 +46,7 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding = true
-    }
+    buildFeatures.viewBinding = true
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

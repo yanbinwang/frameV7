@@ -5,7 +5,6 @@ import com.dataqin.common.base.binding.BaseQuickAdapter
 import com.dataqin.common.base.binding.BaseViewBindingHolder
 import com.dataqin.testnew.databinding.ItemTestBinding
 import com.dataqin.testnew.model.SelectModel
-import com.dataqin.testnew.model.TestListModel
 
 /**
  * Created by WangYanBin on 2020/8/14.

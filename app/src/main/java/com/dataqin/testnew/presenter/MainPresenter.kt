@@ -21,28 +21,28 @@ class MainPresenter : MainContract.Presenter() {
 //        getView().showDialog()
 //        getView().getUserInfoSuccess(Any())
 
-        addDisposable(
-                getSendVerificationApi("dsfdsfds", HttpParams().signParams())
-                        .compose(RxSchedulers.ioMain())
-//                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : HttpSubscriber<Any>() {
-
-                            override fun onStart() {
-                                super.onStart()
-                                getView()?.log("开始")
-                            }
-
-                            override fun onSuccess(data: Any?) {}
-
-                            override fun onFailed(e: Throwable?, msg: String?) {}
-
-                            override fun onComplete() {
-                                super.onComplete()
-                                getView()?.log("结束")
-                            }
-
-                        })
-        )
+//        addDisposable(
+//                getSendVerificationApi("dsfdsfds", HttpParams().signParams())
+//                        .compose(RxSchedulers.ioMain())
+////                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+//                        .subscribeWith(object : HttpSubscriber<Any>() {
+//
+//                            override fun onStart() {
+//                                super.onStart()
+//                                getView()?.log("开始")
+//                            }
+//
+//                            override fun onSuccess(data: Any?) {}
+//
+//                            override fun onFailed(e: Throwable?, msg: String?) {}
+//
+//                            override fun onComplete() {
+//                                super.onComplete()
+//                                getView()?.log("结束")
+//                            }
+//
+//                        })
+//        )
     }
 
     override fun getDownload() {
